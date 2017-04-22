@@ -11,6 +11,7 @@ typedef struct{
 }ResultPair;
 
 int runAlgorithms(string fileName);
+void printVector(std::vector<int> vec, int vecLength);
 ResultPair mssLinear(std::vector<int> array, int length);
 
 
@@ -40,7 +41,8 @@ int runAlgorithms(string fileName){
 
     //The vector with the problem
     std::vector<int> problem;
-    //The vectors number of elements
+    //The vectors number of elements (not really needed but leftover and still used 
+    //from the switch to vector from array)
     int problemLength = 0;
 
     //Open the file and verify it opened
@@ -58,9 +60,9 @@ int runAlgorithms(string fileName){
     size_t pos = 0;
     string token;
 
-    //1. Get one problem at a time and store it in the vector problem.
+    //1. Get/Parse one problem store it in vector<int> problem.
     //2. Run all four algorithms on the vector, time and print the results.
-    //3. Repeat.
+    //3. Repeat for all lines in problem file.
     while(!input.eof()){
 
         problemLength=0;
@@ -91,19 +93,9 @@ int runAlgorithms(string fileName){
            problemLength++;
         }
 
-        //For debugging: prints the vector contents
-
+        //Print the final vector/problem contents
         cout << endl;
-        for(int j=0;j<problemLength;j++){
-            cout << problem[j];
-            if(j+1 != problemLength){
-                cout << ", ";
-            }
-            else{
-                cout << endl;
-            }
-
-        }
+        printVector(problem, problemLength);
 
 
 
@@ -121,21 +113,26 @@ int runAlgorithms(string fileName){
 
         **/
         ResultPair alg4Results = mssLinear(problem, problemLength);
-        for(int k=0;k<alg4Results.array.size();k++){
-            cout << alg4Results.array[k];
-            if(k+1 != alg4Results.array.size()){
+        printVector(alg4Results.array, alg4Results.array.size());
+        cout << alg4Results.sum << endl << endl;
+
+        //clear the vector
+        problem.clear();
+    }
+    return 0;
+}
+
+void printVector(std::vector<int> vec, int vecLength){
+    for(int i=0;i<vecLength;i++){
+            cout << vec[i];
+            if(i+1 != vecLength){
                 cout << ", ";
             }
             else{
                 cout << endl;
             }
+
         }
-        cout << alg4Results.sum << endl << endl;
-
-
-        problem.clear();
-    }
-    return 0;
 }
 
 ResultPair mssLinear(std::vector<int> array, int length){
