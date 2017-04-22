@@ -1,7 +1,9 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <time.h>
 #define maxProblem 100
 using namespace std;
 
@@ -11,7 +13,7 @@ typedef struct{
 }ResultPair;
 
 int runAlgorithms(string fileName);
-void printVector(std::vector<int> vec, int vecLength);
+void printVector(std::vector<int> vec, int vecLength, std::ofstream & outfile);
 ResultPair mssLinear(std::vector<int> array, int length);
 
 
@@ -36,16 +38,16 @@ int main(){
 
 
 
-//Function to read input file and run all algoritm tests
+//Function to read input file and run all algorithms and tests
 int runAlgorithms(string fileName){
 
     //The vector with the problem
     std::vector<int> problem;
-    //The vectors number of elements (not really needed but leftover and still used 
+    //The vectors number of elements (not really needed but leftover and still used
     //from the switch to vector from array)
     int problemLength = 0;
 
-    //Open the file and verify it opened
+    //Open the input file and verify it opened
     const char* file = fileName.c_str();
     std::ifstream input;
     input.open(file, std::ifstream::in);
@@ -54,11 +56,16 @@ int runAlgorithms(string fileName){
         return 1;
     }
 
+    //Open the output file
+    std::ofstream output;
+    output.open("MSS_Results.txt");
+
     //Variables for file parsing
     string line;
     string delimiter = " ";
     size_t pos = 0;
     string token;
+    int problemNumber = 0;
 
     //1. Get/Parse one problem store it in vector<int> problem.
     //2. Run all four algorithms on the vector, time and print the results.
@@ -92,14 +99,12 @@ int runAlgorithms(string fileName){
            problem.push_back(std::atoi(token.c_str()));
            problemLength++;
         }
+        problemNumber++;
 
         //Print the final vector/problem contents
-        cout << endl;
-        printVector(problem, problemLength);
-
-
-
-
+        output << "Problem " << problemNumber << endl;
+        printVector(problem, problemLength, output);
+        output << endl;
 
         /**
             We should be able to just run our algorithms here. We can each
@@ -107,34 +112,58 @@ int runAlgorithms(string fileName){
             The variable problemLength has the current number of items in problem[].
             We can each make a run with our algorithm, time them, then save the results
             as we go to a file or data structure. This should be a good skeleton to work from.
-
-
-
-
         **/
+
+        //**************************Algorithm 1 Run Area************************
+
+        //**************************Algorithm 1 Run Area************************
+
+
+        //**************************Algorithm 2 Run Area************************
+
+        //**************************Algorithm 2 Run Area************************
+
+
+        //**************************Algorithm 3 Run Area************************
+
+        //**************************Algorithm 3 Run Area************************
+
+
+        //**************************Algorithm 4 (Linear) Run Area************************
+        output << "Algorithm 4 Problem " << problemNumber << endl;
+        clock_t alg4_begin = clock();
         ResultPair alg4Results = mssLinear(problem, problemLength);
-        printVector(alg4Results.array, alg4Results.array.size());
-        cout << alg4Results.sum << endl << endl;
+        clock_t alg4_end = clock();
+        float alg4_elapsed = (float)(alg4_end - alg4_begin) / CLOCKS_PER_SEC;
+        printVector(alg4Results.array, alg4Results.array.size(), output);
+        output << "MSS Sum: " << alg4Results.sum << endl
+               << "MSS Time: " << fixed << setprecision(10) << alg4_elapsed << endl << endl;
+        //**************************Algorithm 4 (Linear) Run Area************************
+
 
         //clear the vector
         problem.clear();
     }
+    input.close();
+    output.close();
     return 0;
 }
 
-void printVector(std::vector<int> vec, int vecLength){
+//Print Vector Contents
+void printVector(std::vector<int> vec, int vecLength, std::ofstream & outfile){
     for(int i=0;i<vecLength;i++){
-            cout << vec[i];
-            if(i+1 != vecLength){
-                cout << ", ";
+            outfile << vec[i];
+            if(i+1 == vecLength){
+                outfile << endl;
             }
             else{
-                cout << endl;
+                outfile << ", ";
             }
 
-        }
+     }
 }
 
+//Algorithm 4 Linear
 ResultPair mssLinear(std::vector<int> array, int length){
     int maxSum = array[0];
     int currMax = array[0];
