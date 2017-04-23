@@ -19,9 +19,9 @@ ResultPair mssLinear(std::vector<int> array, int length);
 
 int main(){
 
-    string fileName = "MSS_TestProblems.txt";
+    string fileName;
     cout << "What file should I read?" << endl;
-    //cin >> fileName;
+    cin >> fileName;
     //We can undo this later
 
 
@@ -138,6 +138,7 @@ int runAlgorithms(string fileName){
         printVector(alg4Results.array, alg4Results.array.size(), output);
         output << "MSS Sum: " << alg4Results.sum << endl
                << "MSS Time: " << fixed << setprecision(10) << alg4_elapsed << endl << endl;
+        cout << fixed << setprecision(10) << alg4_elapsed << endl;
         //**************************Algorithm 4 (Linear) Run Area************************
 
 
